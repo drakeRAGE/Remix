@@ -72,14 +72,6 @@ export default function Index() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center text-gray-400">
-                <input type="checkbox" className="rounded bg-gray-800 border-gray-700 text-purple-500 focus:ring-purple-500 mr-2" />
-                Remember me
-              </label>
-              <a href="#" className="text-purple-500 hover:text-purple-400">Forgot Password?</a>
-            </div>
-
             <button
               type="submit"
               className="w-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white py-3 rounded-lg font-medium hover:from-purple-700 hover:to-fuchsia-700 transition duration-200 transform hover:-translate-y-0.5"

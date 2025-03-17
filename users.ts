@@ -19,3 +19,31 @@ export const users: User[] = [
     { id: "11", name: "Olivia Brown", email: "olivia.b@studio.net", password: "Br0wnOl1v!" },
     { id: "12", name: "Ethan Wright", email: "wright.e@systems.org", password: "Wr1ght2023#" }
 ];
+
+// To add user to the database
+export const addUser = (user: User) => {
+    // Check for existing user
+    const existingUser = findUserByEmailPassword(user.email, user.password);
+
+    if (existingUser === undefined) {
+        users.push(user);
+    }
+};
+
+// To find user 
+export const findUser = (id: String) => {
+    users.find((u) => u.id === id)
+};
+
+// To find user by email and password
+export const findUserByEmailPassword = (email: String, password: String) => {
+    users.find((u) => u.email === email && u.password === password);
+};
+
+// To delete user from database
+export const deleteUser = (id: String) => {
+    const index = users.findIndex((u) => u.id === id);
+    if (index !== -1) {
+        users.splice(index, 1);
+    }
+};
