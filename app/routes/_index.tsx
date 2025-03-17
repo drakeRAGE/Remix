@@ -1,5 +1,12 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Form } from "@remix-run/react";
+import { User, addUser, findUserByEmailPassword } from "users";
+import { v4 as uuidv4 } from 'uuid';
+
+type ActionData = {
+  error?: string;
+  user?: User;
+}
 
 export const meta: MetaFunction = () => {
   return [
@@ -7,6 +14,40 @@ export const meta: MetaFunction = () => {
     { name: "description", content: "Welcome to Remix!" },
   ];
 };
+
+export const action = async ({ request }: { request: Request }) => {
+  const formData = await request.formData();
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+
+  if (!email || !password) {
+    return Response.json(
+      {
+        error: "Email and password are required."
+      },
+      {
+        status: 400,
+      }
+    );
+  }
+
+  const newUser = {
+    id: uuidv4(),
+    name,
+    email,
+    password,
+  }
+
+  const existingUser = findUserByEmailPassword(email, password);
+  const user = existingUser ?? newUser;
+
+  if (existingUser === undefined) {
+    addUser(user);
+  }
+
+  return Response.json({ user }, { status: 200 })
+}
 
 export default function Index() {
   return (
