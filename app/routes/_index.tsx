@@ -1,5 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
-import { Form } from "@remix-run/react";
+import { Form, useActionData, useNavigate } from "@remix-run/react";
+import { useEffect } from "react";
 import { User, addUser, findUserByEmailPassword } from "users";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -50,6 +51,23 @@ export const action = async ({ request }: { request: Request }) => {
 }
 
 export default function Index() {
+  const actionData = useActionData<ActionData>();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('userLogged');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      location.pathname = `/profile/${user.id}`;
+    }
+
+    if (actionData?.user) {
+      localStorage.setItem('userLogged', JSON.stringify(actionData.user));
+      navigate(`/profile/${actionData.user.id}`);
+    }
+  }, [actionData, navigate]);
+
+  // Add error display
   return (
     <div className="min-h-screen flex">
       {/* Left Panel - Decorative */}
@@ -63,6 +81,12 @@ export default function Index() {
       {/* Right Panel - Login Form */}
       <div className="w-full lg:w-1/2 bg-gray-900 flex items-center justify-center p-12">
         <div className="max-w-md w-full">
+          {actionData?.error && (
+            <div className="mb-4 p-3 bg-red-500 text-white rounded-lg">
+              {actionData.error}
+            </div>
+          )}
+          {/* Rest of your form remains the same */}
           <div className="text-center mb-12">
             <h1 className="text-3xl font-bold text-white mb-2">Dragbos</h1>
             <p className="text-gray-400">Sign in to your account</p>

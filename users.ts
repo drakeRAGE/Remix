@@ -31,13 +31,13 @@ export const addUser = (user: User) => {
 };
 
 // To find user 
+// Fix the missing return statements
 export const findUser = (id: String) => {
-    users.find((u) => u.id === id)
+    return users.find((u) => u.id === id);
 };
 
-// To find user by email and password
 export const findUserByEmailPassword = (email: String, password: String) => {
-    users.find((u) => u.email === email && u.password === password);
+    return users.find((u) => u.email === email && u.password === password);
 };
 
 // To delete user from database
